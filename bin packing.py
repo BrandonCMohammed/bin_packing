@@ -51,20 +51,30 @@ for j in range(num_items):
 
 len(cqm.variables)
 
-"""
+#Samplers are how we solve this problem. They sample the lowest energy solutions to the problem
+#dwave.system is used to incorporate a sampler in the Ocean software stack
 from dwave.system import LeapHybridCQMSampler
 sampler = LeapHybridCQMSampler()  
 
+#sampleset is used for holing samples and many other types of infomation
 sampleset = sampler.sample_cqm(cqm,
                                time_limit=180,
                                label="SDK Examples - Bin Packing")  
-feasible_sampleset = sampleset.filter(lambda row: row.is_feasible)  
+
+#We will now filter the results and obtain only results that are feisable 
+feasible_sampleset = sampleset.filter(lambda row: row.is_feasible)
+
+#If there are filitered results, we now want the best results. using .first. This returns the sameple with the lowest energy
 if len(feasible_sampleset):      
     best = feasible_sampleset.first
     print("{} feasible solutions of {}.".format(len(feasible_sampleset), len(sampleset)))
 
+print(best)
+
+"""
 selected_bins = [key for key, val in best.sample.items() if 'bin_used' in key and val]   
 print("{} bins are used.".format(len(selected_bins))) 
+
 
 def get_indices(name):
     return [int(digs) for digs in name.split('_') if digs.isdigit()]
