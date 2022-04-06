@@ -69,9 +69,9 @@ if len(feasible_sampleset):
     best = feasible_sampleset.first
     print("{} feasible solutions of {}.".format(len(feasible_sampleset), len(sampleset)))
 
-print(best)
 
-"""
+
+#The following line uses a list comprehension to obtain the bins that were used
 selected_bins = [key for key, val in best.sample.items() if 'bin_used' in key and val]   
 print("{} bins are used.".format(len(selected_bins))) 
 
@@ -79,9 +79,10 @@ print("{} bins are used.".format(len(selected_bins)))
 def get_indices(name):
     return [int(digs) for digs in name.split('_') if digs.isdigit()]
 
-
+#This for loop returns the weights in each bin
 for bin in selected_bins: 
-                           
+
+    #in_bin is a list that has all the               
     in_bin = [key for key, val in best.sample.items() if
             "_in_bin" in key and
             get_indices(key)[1] == get_indices(bin)[0]
@@ -89,4 +90,3 @@ for bin in selected_bins:
     b = get_indices(in_bin[0])[1]
     w = [weights[get_indices(item)[0]] for item in in_bin]
     print("Bin {} has weights {} for a total of {}.".format(b, w, sum(w)))
-"""
